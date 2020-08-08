@@ -1,0 +1,98 @@
+(function() {
+  var naver_corp_da = window.naver_corp_da || {};
+
+  var da_dom_id = 'p_main_ittech_1'
+  var uId = (da_dom_id.length > 0) ? da_dom_id : (typeof nbp_ad !== 'undefined') ? nbp_ad.mobilenetwork.ad_div_id : 'adw_da';
+  var tarEl = NBP_CORP.$(uId);
+
+  var util = naver_corp_da.Util ? new naver_corp_da.Util() : new NBP_CORP.Nimp();
+
+  function makeHTML() {
+    var btn_types = {
+      P_MWC_CTW_BTN1: '블로그 보기',
+      P_MWC_CTW_BTN2: '카페 보기',
+      P_MWC_CTW_BTN3: '포스트 보기',
+      P_MWC_CTW_BTN4: '네이버TV 보기'
+    };
+
+    var cssType = "";
+    if(parent.naver_corp_da && parent.naver_corp_da.main && parent.naver_corp_da.main.darkmode){
+      cssType = "main_topic_wrap type_dark";
+    }else{
+      cssType = "main_topic_wrap";
+    }
+
+    var html = '';
+    html += "<div class=\""+ cssType +"\" >";
+    html += "<a href=\"https://siape.veta.naver.com/fxclick?eu=EU10041882&calp=-&oj=A4YjrwVVtw8rlMh97HNT8ktmqpWi1h8wgM0bbVOcw5BDw2B6mGJ1vgjIz4v%2F%2F6Uxn9ApGWjIHkJqTxTVCrxJIGFgsEiAQvCwj3M%2FXQIJ%2FXRbCvsxJJrhgA&ac=8127955&src=4507428&br=3214041&evtcd=P901&x_ti=1253&tb=ITTECH_1&oid=&sid1=&sid2=&rk=df40fde8ea59ae2c539da8592e9a95a0&eltts=EPsG%2BqBpIpXA6IuqtKv45w%3D%3D&lu=&brs=Y&\" class=\"main_topic_link\" target=\"_blank\">";
+    html += "<div class=\"main_topic_thumb\">";
+    html += "<img src=\"https://ssl.pstatic.net/tveta/libs/1296/1296326/97a98ec700fa4b87de44_20200724164640793.jpg\" width=\"170\" height=\"114\" alt=\"\">";
+    html += "</div>";
+    html += "<div class=\"main_topic_content\">";
+    html += "<em class=\"main_topic_company\">LG전자<i class=\"sp_image icon_ad\"><span class=\"blind\">AD</span></i></em>";
+    html += "<strong class=\"main_topic_title\">게이밍 올레드 TV의 시대를 열다!</strong>";
+    html += "<p class=\"main_topic_context\">48형 LG 올레드 TV OLED48CXKNB</p>";
+    html += "<span class=\"main_topic_rending\">"+ btn_types['P_MWC_CTW_BTN3']+"</span>";
+    html += "</div>";
+    html += "</a>";
+    html += "</div>";
+    return html;
+  }
+
+
+
+  new NBP_CORP.CssLoading("https://ssl.pstatic.net/tveta/libs/assets/css/pc/main/min/main_topic_darkmode.min.css?20200601", function() {
+
+    var daHTML = makeHTML();
+
+    if(tarEl) {
+      tarEl.removeAttribute('style');
+      tarEl.innerHTML = daHTML;
+
+      /* ActiveView */
+      var ac_end_date = "20200809235959";
+      var ad_end_date = "20200809235959";
+
+      var scroll_target = (typeof da_scroll_target !== 'undefined') ? da_scroll_target.targetEl : window;
+      var orientation_change_time = 500;
+
+      var callback = function () {
+        var url = "https://siape.veta.naver.com/fxview?eu=EU10041882&calp=-&oj=A4YjrwVVtw8rlMh97HNT8ktmqpWi1h8wgM0bbVOcw5BDw2B6mGJ1vgjIz4v%2F%2F6Uxn9ApGWjIHkJqTxTVCrxJIGFgsEiAQvCwj3M%2FXQIJ%2FXRbCvsxJJrhgA&ac=8127955&src=4507428&evtcd=V900&x_ti=1253&tb=ITTECH_1&oid=&sid1=&sid2=&rk=df40fde8ea59ae2c539da8592e9a95a0&eltts=EPsG%2BqBpIpXA6IuqtKv45w%3D%3D&brs=Y&&eid=V900&x_ev=";
+        var x_ev = '';
+        try {
+          var target = NBP_CORP.$(uId);
+          x_ev = (target) ? ((parseInt(target.getBoundingClientRect().height || target.offsetHeight, 10) === 0) ? '000' : '111') : '000';
+        } catch(e) {
+          x_ev = '000';
+        } finally {
+          url += x_ev;
+          util.log(url);
+        }
+      };
+
+      var callbackForInValid = function () {};
+
+      naver_corp_da.activeViews[uId] = naver_corp_da.activeViews[uId] || null;
+
+
+      if(naver_corp_da.activeViews[uId]){
+        naver_corp_da.activeViews[uId].clearActiveView();
+        naver_corp_da.activeViews[uId] = null;
+      }
+
+      naver_corp_da.activeViews[uId] = new naver_corp_da.ActiveView({
+        adDivId : uId,
+        acEndDate : ac_end_date,
+        adEndDate : ad_end_date,
+        scrollTarget : scroll_target,
+        orientationChangeTime : orientation_change_time,
+        activeViewTime : 1000,
+        activeViewPercentage : 0.5,
+        callback : callback,
+        callbackForInValid : callbackForInValid
+      });
+
+      naver_corp_da.activeViews[uId].checkActiveView();
+    }
+  });
+})();
